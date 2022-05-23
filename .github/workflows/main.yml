@@ -1,0 +1,34 @@
+name: CI Pipeline - Main Workflow
+on:
+  #Trigger the workflow on push from the develop branch
+  # label:
+  #   types:
+  #     - on-going work
+  #     - test-only
+  #     - sca-only
+  #     - scan-only
+  #     - test-only
+  #     - buid-only
+  push:
+    branches:
+      - feature-*
+      - master
+      - develop
+    issues:
+      types: [synchronize, opened, reopened, labeled, unlabeled]
+
+jobs:
+  call-sonar-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@v1
+
+  call-trivy-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@v1
+
+  call-test-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@v1
+
+  call-build-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@v1
+
+  call-deploy-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@v1
