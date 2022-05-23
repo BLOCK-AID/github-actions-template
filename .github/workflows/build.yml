@@ -1,18 +1,20 @@
 name: CI Pipeline - Build
 on:
   #Trigger the workflow on push from the develop branch
-  label:
-    types:
-      - on-going work
   push:
     branches:
       - feature-*
       - master
       - develop
+
+  #Trigger the workflow on issue labels
+  issues:
+    types:
+      - labeled
 jobs:
   #Test's job
   tests:
-    if: "contains(github.event.issue.labels.*.name, 'on-going work')"
+    if: "contains(github.event.issue.labels.*.name, 'test-only')"
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -40,6 +42,7 @@ jobs:
   sonar:
     #Depends on test's job
     # needs: tests
+    if: "contains(github.event.issue.labels.*.name, 'sca-only')"
     name: SonarQube analysis
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +63,8 @@ jobs:
 
   trivy:
     #Depends on sonar's job
-    needs: sonar
+    #needs: sonar
+    if: "contains(github.event.issue.labels.*.name, 'sast-only')"
     name: Trivy Check
     runs-on: ubuntu-18.04
     steps:
@@ -83,7 +87,8 @@ jobs:
   #Build's job
   build:
     #Depends on trivy's job
-    needs: trivy
+    #needs: trivy
+    if: "contains(github.event.issue.labels.*.name, 'build-only')"
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -119,6 +124,7 @@ jobs:
   deploy:
     #Depends on build's job
     needs: build
+    if: "contains(github.event.issue.labels.*.name, 'deploy')"
     name: Deploy
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
