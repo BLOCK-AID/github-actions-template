@@ -12,7 +12,7 @@ on:
 jobs:
   #Test's job
   tests:
-    if: "!contains(github.event.commits[0].message, '[skip-test]')"
+    if: "contains(github.event.issue.labels.*.name, 'on-going work')"
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
