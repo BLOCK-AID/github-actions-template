@@ -1,4 +1,6 @@
-name: Repo Validations
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+#name: Repo Validations
 on:
   #Manually trigger workflow runs
   workflow_dispatch:
