@@ -1,7 +1,9 @@
-name: CI Pipeline - SAST
+# name: CI Pipeline - SAST
 on:
   workflow_call:
 
+jobs:
+  #Trivy's Job
   trivy:
   #Depends on sonar's job
   #needs: sonar
