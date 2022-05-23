@@ -10,28 +10,9 @@ on:
       - master
       - develop
 jobs:
-  # Job controller using [keywords] to enable/disable test
-  skip-test:
-    runs-on: ubuntu-latest
-
-    outputs: # job outputs
-      skip: ${{ steps.skip-test.outputs.skip }}
-
-  steps:
-    - uses: actions/checkout@v2
-    
-    - name: skip-test
-      id: skip-test # id used for referencing step
-      uses: saulmaldonado/skip-workflow@v1
-      with:
-        phrase: '[skip-test]'
-
-
   #Test's job
   tests:
-    needs: skip-test # needs is required for reference and to prevent both jobs running at the same time
-
-    if: ${{ !needs.skip-test.outputs.skip }}  # if this is true - skip that job
+    if: "!contains(github.event.commits[0].message, '[skip-test]')"
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
