@@ -39,7 +39,7 @@ jobs:
   #Sonar's Job
   sonar:
     #Depends on test's job
-    needs: tests
+    # needs: tests
     name: SonarQube analysis
     runs-on: ubuntu-latest
     steps:
