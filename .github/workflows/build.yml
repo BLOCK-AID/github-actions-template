@@ -1,9 +1,12 @@
 name: CI Pipeline - Build
 on:
   #Trigger the workflow on push from the develop branch
+  label:
+    types:
+      - on-going work
   push:
     branches:
-      - develop
+      - feature-*
 jobs:
   #Test's job
   tests:
