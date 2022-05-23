@@ -20,14 +20,27 @@ Develop templates to implement the different triggering mechanism for specific c
 
 2. Feature Branch Push - No Actions   
 
+```
+> git add.
+> git commit -m "My message.   skip-checks:true"
+> git push 
+```
+
 
 3. Feature Branch Push - Code Scans (CVEs & SCA)     
 
+```
+gh issue create --title "Feature - All" --body "Run all scans and tests" --label "on-going work, bug" 
+```
 
 4. Feature Branch Push - Unit Test    
 
 
 5. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
+
+```
+gh issue create --title "Feature - All" --body "Run all scans and tests" --label bug 
+```
 
 
 6. Release Branch - Validations   

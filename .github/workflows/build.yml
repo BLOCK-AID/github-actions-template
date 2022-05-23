@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - feature-*
+      - master
+      - develop
 jobs:
   #Test's job
   tests:
