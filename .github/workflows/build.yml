@@ -1,19 +1,23 @@
 name: CI Pipeline - Build
 on:
   #Trigger the workflow on push from the develop branch
-  label:
+  # label:
+  #   types:
+  #     - on-going work
+  #     - test-only
+  #     - sca-only
+  #     - scan-only
+  #     - test-only
+  #     - buid-only
+  # push:
+  #   branches:
+  #     - feature-*
+  #     - master
+  #     - develop
+
+  issues:
     types:
-      - on-going work
-      - test-only
-      - sca-only
-      - scan-only
-      - test-only
-      - buid-only
-  push:
-    branches:
-      - feature-*
-      - master
-      - develop
+      - labeled
 jobs:
   #Test's job
   tests:
