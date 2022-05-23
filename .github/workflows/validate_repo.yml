@@ -1,6 +1,6 @@
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
-name: Repo Validations
+name: CI Pipeline - Validate Repo
 on:
   #Manually trigger workflow runs
   workflow_dispatch:
