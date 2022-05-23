@@ -3,9 +3,9 @@ on:
   #Manually trigger workflow runs
   workflow_dispatch:
   #Trigger the workflow on push from the develop branch
-  push:
-    branches:
-      - develop
+  # push:
+  #   branches:
+  #     - develop
 jobs:
   sonarQubeTrigger:
     name: SonarQube Check
