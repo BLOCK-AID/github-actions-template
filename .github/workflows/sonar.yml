@@ -1,4 +1,4 @@
-name: CI Pipeline - SonarQube
+# name: CI Pipeline - SonarQube
 on:
   workflow_call:
 
