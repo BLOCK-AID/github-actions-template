@@ -21,8 +21,8 @@ Develop templates to implement the different triggering mechanism for specific c
 2. Feature Branch Push - No Actions   
 
 ```
-> git add.
-> git commit -m "My message.   skip-checks:true"
+> git add .
+> git commit -m "My message.   [skip actions]"
 > git push 
 ```
 
