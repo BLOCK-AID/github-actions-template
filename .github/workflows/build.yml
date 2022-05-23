@@ -9,19 +9,18 @@ on:
   #     - scan-only
   #     - test-only
   #     - buid-only
-  # push:
-  #   branches:
-  #     - feature-*
-  #     - master
-  #     - develop
+  push:
+    branches:
+      - feature-*
+      - master
+      - develop
+    issues:
+      types: [synchronize, opened, reopened, labeled, unlabeled]
 
-  issues:
-    types:
-      - labeled
 jobs:
   #Test's job
   tests:
-    if: "contains(github.event.label.name, 'test-only')"
+    if: ${{ contains(github.event.*.labels.*.name, 'test-only') }}
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -49,7 +48,7 @@ jobs:
   sonar:
     #Depends on test's job
     # needs: tests
-    if: "contains(github.event.label.name, 'sca-only')"
+    if: ${{ contains(github.event.*.labels.*.name, 'sca-only') }}
     name: SonarQube analysis
     runs-on: ubuntu-latest
     steps:
@@ -71,7 +70,7 @@ jobs:
   trivy:
     #Depends on sonar's job
     #needs: sonar
-    if: "contains(github.event.label.name, 'sast-only')"
+    if: ${{ contains(github.event.*.labels.*.name, 'sast-only') }}
     name: Trivy Check
     runs-on: ubuntu-18.04
     steps:
@@ -95,7 +94,7 @@ jobs:
   build:
     #Depends on trivy's job
     #needs: trivy
-    if: "contains(github.event.label.name, 'build-only')"
+    if: ${{ contains(github.event.*.labels.*.name, 'build-only') }}
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -131,7 +130,7 @@ jobs:
   deploy:
     #Depends on build's job
     needs: build
-    if: "contains(github.event.label.name, 'deploy')"
+    if: ${{ contains(github.event.*.labels.*.name, 'deploy') }}
     name: Deploy
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
