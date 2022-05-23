@@ -22,7 +22,7 @@ Develop templates to implement the different triggering mechanism for specific c
 
 ```
 > git add .
-> git commit -m "My message.   [skip actions]"
+> git commit -m "My message.  [skip actions]"
 > git push 
 ```
 
