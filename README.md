@@ -16,6 +16,10 @@ Develop templates to implement the different triggering mechanism for specific c
 1. Feature Branch - Validations   
 
     Upon the creation of the repository containing both the master and develop branch, create an issue with a ToDo statement to validate the state of the repos.
+```
+# create new bug label
+$ gh label create bug --description "Something isn't working" --color E99695
+```
 
 
 2. Feature Branch Push - No Actions   
@@ -30,16 +34,28 @@ Develop templates to implement the different triggering mechanism for specific c
 3. Feature Branch Push - Code Scans (CVEs & SCA)     
 
 ```
-gh issue create --title "Feature - All" --body "Run all scans and tests" --label "on-going work, bug" 
+> gh issue create --title "Feature - Scan Only" --body "Run all scans" --label "sca-only,sast-only" 
+> git add .
+> git commit -m "Run scans only"
+> git push 
 ```
 
 4. Feature Branch Push - Unit Test    
 
+```
+> gh issue create --title "Feature - Test Only" --body "Run all scans" --label "test-only" 
+> git add .
+> git commit -m "Run tests only"
+> git push 
+```
 
 5. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
 
 ```
-gh issue create --title "Feature - All" --body "Run all scans and tests" --label bug 
+>gh issue create --title "Feature - All" --body "Run all scans and tests" --label "sca-only,sast-only,test-only" 
+> git add .
+> git commit -m "Run All Jobs"
+> git push 
 ```
 
 
