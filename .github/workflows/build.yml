@@ -1,7 +1,5 @@
-name: CI/CD Pipeline
+name: CI Pipeline - Build
 on:
-  #Manually trigger workflow runs
-  workflow_dispatch:
   #Trigger the workflow on push from the develop branch
   push:
     branches:
