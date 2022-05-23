@@ -8,9 +8,9 @@ on:
       - develop
 
   #Trigger the workflow on issue labels
-  issues:
-    types:
-      - labeled
+  # issues:
+  #   types:
+  #     - labeled
 jobs:
   #Test's job
   tests:
