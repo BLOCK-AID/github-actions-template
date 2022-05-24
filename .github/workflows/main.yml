@@ -8,7 +8,7 @@ on:
       - develop
 
 env:
-  WF_MESSAGE: ${{ github.event.head_commit.message }}
+  WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
 jobs:
   log-env:
@@ -37,7 +37,7 @@ jobs:
 
   call-sonar-workflow:
     needs: log-env
-    if: contains(${{ github.event.head_commit.message }}, 'sca-only')
+    if: "contains(${WF_MESSAGE}, 'sca-only')"
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sca-only'
@@ -49,7 +49,7 @@ jobs:
 
   call-trivy-workflow:
     needs: log-env
-    if: contains(${{ github.event.head_commit.message }}, 'sast-only')
+    if: "contains(${{ github.event.head_commit.message }}, 'sast-only')"
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sast-only'
@@ -58,7 +58,7 @@ jobs:
 
   call-test-workflow:
     needs: log-env
-    if: contains(${{ github.event.head_commit.message }}, 'test-only')
+    if: "contains(${WF_MESSAGE}, 'test-only')"
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was test-only'
@@ -66,14 +66,14 @@ jobs:
 
   call-build-workflow:
     needs: log-env
-    if: contains(${{ github.event.head_commit.message }}, 'build-only')
+    if: "contains(${{ github.event.head_commit.message }}, 'build-only')"
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was build-only'
     # uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
 
   call-deploy-workflow:
-    if: contains(${{ github.event.head_commit.message }}, 'deploy')
+    if: "contains(${{ github.event.head_commit.message }}, 'deploy')"
     needs: call-build-workflow
     runs-on: ubuntu-latest
     steps:
