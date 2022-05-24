@@ -1,5 +1,6 @@
 name: CI Pipeline - Main Workflow
 on:
+
   #Trigger the workflow on push from the develop branch
   # label:
   #   types:
@@ -11,14 +12,14 @@ on:
   #     - buid-only
   push:
     branches:
-      - feature-*
+      - 'feature/**'
       - master
       - develop
     # issues:
     #   types: [synchronize, opened, reopened, labeled, unlabeled]
 
-  label:
-    types: [created, edited]
+  # label:
+  #   types: [created, edited]
 
 jobs:
   call-sonar-workflow:
