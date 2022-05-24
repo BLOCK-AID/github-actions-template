@@ -6,8 +6,8 @@ jobs:
   #Deploy's job
   deploy:
     #Depends on build's job
-    needs: build
-    if: ${{ contains(github.event.*.labels.*.name, 'deploy') }}
+    # needs: build
+    # if: ${{ contains(github.event.*.labels.*.name, 'deploy') }}
     name: Deploy
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
