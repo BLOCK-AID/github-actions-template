@@ -26,12 +26,11 @@ jobs:
       - name: SonarQube Scan
         # run: ./mvnw -B verify sonar:sonar -Dsonar.projectKey=baralga -Dsonar.organization=baralga -Dsonar.host.url=host -Dsonar.login=login
         run: |
-          env
-          ls
-          cd ../
-          ls
-          mvn -N io.takari:maven:wrapper
           pwd
+          cd ../
+          ls -ltr
+          mvn -N io.takari:maven:wrapper
+          ls -ltr
           ./mvnw -B verify sonar:sonar -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
         env:
           SONAR_HOST: ${{ secrets.host }}
