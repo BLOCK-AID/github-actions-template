@@ -22,7 +22,7 @@ on:
   #   types: [created, edited]
 
 env:
-  WF_LABEL: Avail to all jobs
+  WF_MESSAGE: ${{ github.event.head_commit.message }}
   
 jobs:
   log-env:
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Log ENV Variables
         run: |
-          echo "WF_ENV: ${WF_ENV}"
+          echo "WF_MESSAGE: ${WF_MESSAGE}"
 
   dump-github-context:
     runs-on: ubuntu-latest
