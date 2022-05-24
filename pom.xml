@@ -12,7 +12,7 @@
 	<groupId>com.dev.cicd</groupId>
 	<artifactId>data</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>github-actions-templates</name>
+	<name>github-actions-template</name>
 	<description>GitHub Actions Demo project for Spring Boot with CI/CD</description>
 
 	<properties>
