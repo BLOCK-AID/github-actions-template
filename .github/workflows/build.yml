@@ -96,7 +96,7 @@ jobs:
   build:
     #Depends on trivy's job
     #needs: trivy
-    if: ${{ contains(github.event.*.labels.*.name, 'build-only') }}
+    # if: ${{ contains(github.event.*.labels.*.name, 'build-only') }}
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest

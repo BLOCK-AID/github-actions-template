@@ -5,7 +5,7 @@ on:
 jobs:
   #Test's job
   tests:
-    if: ${{ contains(github.event.*.labels.*.name, 'test-only') }}
+    # if: ${{ contains(github.event.*.labels.*.name, 'test-only') }}
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest

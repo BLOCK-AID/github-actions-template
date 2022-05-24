@@ -7,7 +7,7 @@ jobs:
   trivy:
   #Depends on sonar's job
   #needs: sonar
-  if: ${{ contains(github.event.*.labels.*.name, 'sast-only') }}
+  # if: ${{ contains(github.event.*.labels.*.name, 'sast-only') }}
   name: Trivy Check
   runs-on: ubuntu-18.04
   steps:
