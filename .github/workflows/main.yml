@@ -12,7 +12,7 @@ on:
   #     - buid-only
   push:
     branches:
-      - 'feature/**'
+      - 'feature-*'
       - master
       - develop
     # issues:
