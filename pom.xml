@@ -103,7 +103,7 @@
                     http://blockaid-sonar-lb-424899706.us-east-2.elb.amazonaws.com
                 </sonar.host.url> -->
 				<sonar.projectVersion>0.1.0</sonar.projectVersion>
-				<sonar.sources>${project.build.directory}/src/main/java/</sonar.sources>
+				<!-- <sonar.sources>${project.build.directory}/src/main/java/</sonar.sources> -->
 				<sonar.scm.provider>git</sonar.scm.provider>
 				<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 				<sonar.java.binaries>**/target/classes</sonar.java.binaries>
