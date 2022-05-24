@@ -23,7 +23,7 @@ on:
 
 jobs:
   dump-github-context:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - name: Dump CitHub Context
         env:
