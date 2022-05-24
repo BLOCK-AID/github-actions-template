@@ -48,8 +48,7 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running sca-only'
-    uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
-    uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
+    uses: BLOCK-AID/ci_workflows/.github/workflows/sonar.yml@feature-1
     secrets:
       host: ${{ secrets.SONARQUBE_HOST }}
       login: ${{ secrets.SONARQUBE_TOKEN }}
@@ -60,7 +59,7 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running sast-only'
-    uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
+    uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@feature-1
 
   call-test-workflow:
     if: "contains(github.event.head_commit.message, 'test-only') || contains(github.event.head_commit.message, 'all-jobs')" 
@@ -68,7 +67,7 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running test-only'
-    uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@feature-1
+    uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@feature-1
 
   call-build-workflow:
     if: "contains(github.event.head_commit.message, 'build-only') || contains(github.event.head_commit.message, 'all-jobs')" 
@@ -76,7 +75,7 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running build-only'
-    uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
+    uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@feature-1
 
   call-deploy-workflow:
     if: "contains(github.event.head_commit.message, 'deploy') || contains(github.event.head_commit.message, 'all-jobs')" 
@@ -84,5 +83,5 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running local deploy'
-    uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
+    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@feature-1
 
