@@ -1,12 +1,10 @@
-name: CI Pipeline - Main Workflow
+name: CI Pipeline - Development Workflow
 on:
   #Trigger the workflow on push from the develop branch
   push:
     branches:
       - 'feature-*'
-      - master
-      - develop
-
+      
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
