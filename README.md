@@ -95,7 +95,7 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 > git push  
 ```
 
-5. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch
+5. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch and Tag
 
 ```
 ```
