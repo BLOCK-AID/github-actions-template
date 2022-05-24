@@ -36,7 +36,7 @@ jobs:
         run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
-    needs: log-env
+    # needs: log-env
     if: "contains(${{ github.event.head_commit.message }}, 'sca-only')"
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
     #   login: ${{ secrets.SONARQUBE_TOKEN }}
 
   call-trivy-workflow:
-    needs: log-env
+    # needs: log-env
     if: "contains(${{ github.event.head_commit.message }}, 'sast-only')"
     runs-on: ubuntu-latest
     steps:
@@ -57,7 +57,7 @@ jobs:
     # uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
 
   call-test-workflow:
-    needs: log-env
+    # needs: log-env
     if: "contains(${{ github.event.head_commit.message }}, 'test-only')"
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +65,7 @@ jobs:
     # uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@feature-1
 
   call-build-workflow:
-    needs: log-env
+    # needs: log-env
     if: "contains(${{ github.event.head_commit.message }}, 'build-only')"
     runs-on: ubuntu-latest
     steps:
