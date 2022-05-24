@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - 'hotfix-*'
-
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
@@ -21,7 +20,7 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
-
+          
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
     needs: log-env
@@ -72,4 +71,3 @@ jobs:
     steps:
       - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
     # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
-
