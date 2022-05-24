@@ -22,7 +22,7 @@ on:
   #   types: [created, edited]
 
 env:
-  WF_LABEL: GITHUB_CONTEXT.event
+  WF_LABEL: Avail to all jobs
   
 jobs:
   log-env:
@@ -38,15 +38,17 @@ jobs:
       - name: Dump CitHub Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          echo "$GITHUB_CONTEXT"
+          echo "$GITHUB_CONTEXT.event.commits.message"
 
   dump-job-context:
     runs-on: ubuntu-latest
     steps:
       - name: Dump Job Context
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
     if: github.event.label.name == 'sca-only'
