@@ -34,5 +34,6 @@ jobs:
     uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
 
   call-deploy-workflow:
+    needs: call-build-workflow
     uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
 
