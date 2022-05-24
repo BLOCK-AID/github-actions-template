@@ -22,6 +22,14 @@ on:
   #   types: [created, edited]
 
 jobs:
+  dump-github-context:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Dump CitHub Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
   call-sonar-workflow:
     if: github.event.label.name == 'sca-only'
     runs-on: ubuntu-latest
