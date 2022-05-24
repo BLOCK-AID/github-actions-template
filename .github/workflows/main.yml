@@ -70,7 +70,7 @@ jobs:
     # uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
 
   call-test-workflow:
-    if: contains(${{ github.event.head_commit.message, 'test-only' }})
+    if: contains(${{ github.event.head_commit.message }}, 'test-only' )
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was test-only'
