@@ -21,11 +21,29 @@ on:
   # label:
   #   types: [created, edited]
 
+env:
+  WF_LABEL: GITHUB_CONTEXT.event
+  
 jobs:
+  log-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log ENV Variables
+        run: |
+          echo "WF_ENV: ${WF_ENV}"
+
   dump-github-context:
     runs-on: ubuntu-latest
     steps:
       - name: Dump CitHub Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+  dump-job-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Job Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
