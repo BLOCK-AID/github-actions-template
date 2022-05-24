@@ -11,9 +11,12 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 
 ## CI/CD Workflow
 
+### GitHub Actions - Continuous Integration
 Develop templates to implement the different triggering mechanism for specific conditions supporting the Master Git Workflow as presented below:
 
 <img src="images/ci-cd-workflow.png" alt="drawing" width="600"/>
+
+### GitOps - Continuous Deployment
 
 ## GitHub Action Workflow Templates
 
