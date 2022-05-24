@@ -1,12 +1,11 @@
 # name: CI Pipeline - SonarQube
 on:
   workflow_call:
-
-  secrets:
-    host:
-      required: true
-    login:
-      required: true
+    secrets:
+      host:
+        required: true
+      login:
+        required: true
 jobs:
   #Sonar's Job
   sonar:
