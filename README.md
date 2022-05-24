@@ -13,16 +13,7 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 
 Develop templates to implement the different triggering mechanism for specific conditions within the Master Git Workflow.  
 
-1. Feature Branch - Validations   
-
-    Upon the creation of the repository containing both the master and develop branch, create an issue with a ToDo statement to validate the state of the repos.
-```
-# create new bug label
-$ gh label create bug --description "Something isn't working" --color E99695
-```
-
-
-2. Feature Branch Push - No Actions   
+1. Feature Branch Push - No Actions   
 
 ```
 > git add .
@@ -30,8 +21,7 @@ $ gh label create bug --description "Something isn't working" --color E99695
 > git push 
 ```
 
-
-3. Feature Branch Push - Code Scans (CVEs & SCA)     
+2. Feature Branch Push - Code Scans (CVEs & SCA)     
 
 ```
 > gh issue create --title "Feature - Scan Only" --body "Run all scans" --label "sca-only,sast-only" 
@@ -40,7 +30,7 @@ $ gh label create bug --description "Something isn't working" --color E99695
 > git push 
 ```
 
-4. Feature Branch Push - Unit Test    
+1. Feature Branch Push - Unit Test    
 
 ```
 > gh issue create --title "Feature - Test Only" --body "Run all scans" --label "test-only" 
