@@ -46,7 +46,7 @@ jobs:
     #   host: ${{ secrets.SONARQUBE_HOST }}
     #   login: ${{ secrets.SONARQUBE_TOKEN }}
 
-  call-trivy-workflow:
+  call-scan-workflow:
     if: "contains(github.event.head_commit.message, 'sast-only')"
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +63,7 @@ jobs:
 
   call-build-workflow:
     if: "contains(github.event.head_commit.message, 'build-only')"
+    needs: [call-sonar-workflow, call-scan-workflow, call-test-workflow]
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was build-only'
