@@ -44,7 +44,7 @@ jobs:
 
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    needs: log-env
+    needs: [log-env, call-build-workflow]
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running sca-only'
