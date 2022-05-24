@@ -36,7 +36,7 @@ $ gh label create bug --description "Something isn't working" --color E99695
 ```
 > gh issue create --title "Feature - Scan Only" --body "Run all scans" --label "sca-only,sast-only" 
 > git add .
-> git commit -m "Run scans only"
+> git commit -m "Fixed code -  #7"
 > git push 
 ```
 
