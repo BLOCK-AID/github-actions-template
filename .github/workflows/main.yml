@@ -44,10 +44,11 @@ jobs:
 
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    needs: [log-env, call-build-workflow]
+    needs: log-env
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running sca-only'
+    uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
     uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
     secrets:
       host: ${{ secrets.SONARQUBE_HOST }}
