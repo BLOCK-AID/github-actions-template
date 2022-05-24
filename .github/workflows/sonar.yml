@@ -22,8 +22,7 @@ jobs:
       - name: SonarQube Scan
         # run: ./mvnw -B verify sonar:sonar -Dsonar.projectKey=baralga -Dsonar.organization=baralga -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
         run: |
-          pwd
-          ls -ltr
+          chmod +x mvnw
           ./mvnw -B verify sonar:sonar -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
         env:
           SONAR_HOST: ${{ secrets.host }}
