@@ -20,7 +20,7 @@ on:
 jobs:
   call-sonar-workflow:
     uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
-    secrets:
+    with:
       host: ${{ secrets.SONARQUBE_HOST }}
       token: ${{ secrets.SONARQUBE_TOKEN }}
 
