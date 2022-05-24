@@ -14,8 +14,11 @@ on:
       - feature-*
       - master
       - develop
-    issues:
-      types: [synchronize, opened, reopened, labeled, unlabeled]
+    # issues:
+    #   types: [synchronize, opened, reopened, labeled, unlabeled]
+
+  label:
+    types: [created, edited]
 
 jobs:
   call-sonar-workflow:
