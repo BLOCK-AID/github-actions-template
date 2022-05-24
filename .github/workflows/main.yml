@@ -48,7 +48,7 @@ jobs:
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running sca-only'
-    uses: BLOCK-AID/ci_workflows/.github/workflows/sonar.yml@master
+    uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
     secrets:
       host: ${{ secrets.SONARQUBE_HOST }}
       login: ${{ secrets.SONARQUBE_TOKEN }}
