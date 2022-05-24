@@ -17,6 +17,7 @@ jobs:
   # test-only : run unit tests
   # build-only : build binary / image
   # deploy    : deploy application locally (stand alone jave, docker, or kubernetes)
+  # merge  : raise Pull Request to merge feature to develop branch
   # raise-pr  : raise Pull Request to move feature to develop branch
 
   log-env:

@@ -9,11 +9,21 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 + Scheduled times
 + Manual
 
+## CI/CD Workflow
+
+### GitHub Actions - Continuous Integration
+Develop templates to implement the different triggering mechanism for specific conditions supporting the Master Git Workflow as presented below:
+
+<img src="images/ci-cd-workflow.png" alt="drawing" width="600"/>
+
+### GitOps - Continuous Deployment
+
 ## GitHub Action Workflow Templates
 
-Develop templates to implement the different triggering mechanism for specific conditions within the Master Git Workflow.  
+### Feature Branch Workflows
 
 1. Feature Branch Push - No Actions   
+   
 
 ```
 > git add .
@@ -24,50 +34,106 @@ Develop templates to implement the different triggering mechanism for specific c
 2. Feature Branch Push - Code Scans (CVEs & SCA)     
 
 ```
-> gh issue create --title "Feature - Scan Only" --body "Run all scans" --label "sca-only,sast-only" 
 > git add .
-> git commit -m "Fixed code -  #7"
+> git commit -m "Fixed code -  [sca-only,scan-only]"
 > git push 
 ```
 
-1. Feature Branch Push - Unit Test    
+3. Feature Branch Push - Unit Test    
 
 ```
-> gh issue create --title "Feature - Test Only" --body "Run all scans" --label "test-only" 
 > git add .
-> git commit -m "Run tests only"
+> git commit -m "Fixed code -  [test-only]"
 > git push 
 ```
 
-5. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
+4. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
 
 ```
->gh issue create --title "Feature - All" --body "Run all scans and tests" --label "sca-only,sast-only,test-only" 
 > git add .
-> git commit -m "Run All Jobs"
+> git commit -m "Fixed code -  [all-jobs]"
+> git push  
+```
+
+5. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch
+
+```
+If you are alone working on FeatureB branch, the a pull --rebase develop is the best practice: you are replaying FeatureB changes on top of FeatureA. (and git push --force after).
+```
+
+### Develop Branch Workflows
+
+1. Develop Branch Push - No Actions   
+
+    In GitHub repo, switch to the develop branch and push to develop branch:
+
+```
+> git checkout develop
+> git add .
+> git commit -m "My message.  [skip-actions]"
 > git push 
 ```
 
-
-6. Release Branch - Validations   
-
-
-7. Release Branch Push - No Actions   
-
-
-8. Release Branch Push - Code Scans (CVEs & SCA)   
-
-
-9.  Release Branch Push - Automated Tests   
+2. Develop Branch Push - Full Scans & Tests  
     
+```
+> git add .
+> git commit -m "Fixed code -  [sca-only,scan-only,test-only]"
+> git push 
+```
 
-10. BugFix Branch - Full Scans &  Tests 
+3. BugFix Branch - Full Scans & Tests 
 
+```
+> git add .
+> git commit -m "Fixed code -  [sca-only,scan-only,test-only]"
+> git push 
+```
 
-11. Release Branch Push - Ready for Pull Request (PR) to Master Branch
+4. Develop Branch Push - Ready for Pull Request (PR) to Master Branch
 
+```
+> git add .
+> git commit -m "Fixed code -  [all-jobs]"
+> git push  
+```
 
-12. Code Build - Validations
+5. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch and Tag
 
+```
+```
 
-13. HotFix Branch - Full Scans & Tests 
+### Master Branch Workflows
+
+1.  Master Branch Push - No Actions 
+
+```
+> git checkout master
+> git add .
+> git commit -m "My message.  [skip-actions]"
+> git push 
+```
+
+2.  Master Branch - Full Build
+
+```
+> git add .
+> git commit -m "Fixed code -  [all-jobs]"
+> git push  
+```
+
+3.  HotFix Branch - Full Build 
+
+```
+> git add .
+> git commit -m "Fixed code -  [all-jobs]"
+> git push  
+```
+
+4.  Master Branch - Build & Store Image / Binary 
+
+```
+> git add .
+> git commit -m "Fixed code -  [create-image]"
+> git push  
+```

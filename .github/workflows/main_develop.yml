@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-
+      - 'bugfix-*'
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
@@ -12,11 +12,7 @@ jobs:
   # Jobs are controlled by the commit message flags in [...], they are:
   # skip-actions  : run no jobs
   # all-jobs  : run all jobs
-  # sca-only  : run SonarQube only
-  # scan-only : run SAST scans only
-  # test-only : run unit tests
-  # build-only : build binary / image
-  # deploy    : deploy application locally (stand alone jave, docker, or kubernetes)
+  # merge  : raise Pull Request to merge feature to master branch and tag
 
   log-env:
     runs-on: ubuntu-latest
@@ -24,23 +20,6 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
-
-  # dump-github-context:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Dump CitHub Context
-  #       env:
-  #         GITHUB_CONTEXT: ${{ toJson(github) }}
-  #       run: |
-  #         echo "$GITHUB_CONTEXT"
-
-  # dump-job-context:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Dump Job Context
-  #       env:
-  #         JOB_CONTEXT: ${{ toJson(job) }}
-  #       run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
@@ -85,3 +64,10 @@ jobs:
     #   - run: echo 'Running local deploy'
     uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
+  call-raisepr-workflow:
+    if: "contains(github.event.head_commit.message, 'raise-pr') || contains(github.event.head_commit.message, 'all-jobs')" 
+    # needs: call-build-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
+    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
