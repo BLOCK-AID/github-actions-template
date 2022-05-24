@@ -28,5 +28,5 @@ jobs:
       - name: SonarQube Scan
         uses: kitabisa/sonarqube-action@v1.1.0
         with:
-          host: ${{ inputs.host }}
-          login: ${{ inputs.login }}
+          host: ${{ secrets.host }}
+          login: ${{ secrets.login }}
