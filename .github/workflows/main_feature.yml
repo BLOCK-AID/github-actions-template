@@ -1,4 +1,4 @@
-name: CI Pipeline - Feature Development Workflow
+name: CI Pipeline - Feature Branch Workflow
 on:
   #Trigger the workflow on push to the feature branch
   push:
