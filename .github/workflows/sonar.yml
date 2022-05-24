@@ -1,4 +1,3 @@
-# name: CI Pipeline - SonarQube
 on:
   workflow_call:
     secrets:
