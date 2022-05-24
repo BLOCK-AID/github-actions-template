@@ -9,11 +9,19 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 + Scheduled times
 + Manual
 
+## CI/CD Workflow
+
+Develop templates to implement the different triggering mechanism for specific conditions supporting the Master Git Workflow as presented below:
+
+<img src="images/ci-cd-workflow.png" alt="drawing" width="600"/>
+
 ## GitHub Action Workflow Templates
 
-Develop templates to implement the different triggering mechanism for specific conditions within the Master Git Workflow.  
+### Feature Branch Workflows
 
 1. Feature Branch Push - No Actions   
+   
+
 
 ```
 > git add .
@@ -30,7 +38,7 @@ Develop templates to implement the different triggering mechanism for specific c
 > git push 
 ```
 
-1. Feature Branch Push - Unit Test    
+3. Feature Branch Push - Unit Test    
 
 ```
 > gh issue create --title "Feature - Test Only" --body "Run all scans" --label "test-only" 
@@ -39,7 +47,7 @@ Develop templates to implement the different triggering mechanism for specific c
 > git push 
 ```
 
-5. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
+4. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
 
 ```
 >gh issue create --title "Feature - All" --body "Run all scans and tests" --label "sca-only,sast-only,test-only" 
@@ -48,26 +56,42 @@ Develop templates to implement the different triggering mechanism for specific c
 > git push 
 ```
 
+5. Merge Feature to Develop Branch
 
-6. Release Branch - Validations   
+```
+If you are alone working on FeatureB branch, the a pull --rebase develop is the best practice: you are replaying FeatureB changes on top of FeatureA. (and git push --force after).
+```
+
+### Develop Branch Workflows
+
+1. Develop Branch Push - No Actions   
+
+    In GitHub repo, switch to the develop branch:
+
+```
+
+```
+
+2. Develop Branch Push - Code Scans (CVEs & SCA)   
 
 
-7. Release Branch Push - No Actions   
-
-
-8. Release Branch Push - Code Scans (CVEs & SCA)   
-
-
-9.  Release Branch Push - Automated Tests   
+3. Develop Branch Push - Full Scans & Tests  
     
 
-10. BugFix Branch - Full Scans &  Tests 
+4. BugFix Branch - Full Scans & Tests 
 
 
-11. Release Branch Push - Ready for Pull Request (PR) to Master Branch
+5. Develop Branch Push - Ready for Pull Request (PR) to Master Branch
 
 
-12. Code Build - Validations
+6. Merge Develop to Master Branch
+
+### Master Branch Workflows
+
+1.  Release Branch Push - Ready for Pull Request (PR) to Master Branch
 
 
-13. HotFix Branch - Full Scans & Tests 
+2.  Code Build - Validations
+
+
+3.  HotFix Branch - Full Scans & Tests 

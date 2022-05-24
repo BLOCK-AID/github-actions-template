@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - 'hotfix-*'
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
@@ -17,6 +18,7 @@ jobs:
   # test-only : run unit tests
   # build-only : build binary / image
   # deploy    : deploy application locally (stand alone jave, docker, or kubernetes)
+  # merge  : raise Pull Request to merge feature to develop branch
 
   log-env:
     runs-on: ubuntu-latest
@@ -84,4 +86,12 @@ jobs:
     # steps:
     #   - run: echo 'Running local deploy'
     uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+
+  call-raisepr-workflow:
+    if: "contains(github.event.head_commit.message, 'raise-pr') || contains(github.event.head_commit.message, 'all-jobs')" 
+    # needs: call-build-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
+    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
