@@ -7,7 +7,7 @@ jobs:
   sonar:
     #Depends on test's job
     # needs: tests
-    if: ${{ contains(github.event.*.labels.*.name, 'sca-only') }}
+    # if: ${{ contains(github.event.*.labels.*.name, 'sca-only') }}
     name: SonarQube analysis
     runs-on: ubuntu-latest
     steps:
