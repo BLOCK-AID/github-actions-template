@@ -14,17 +14,13 @@ jobs:
     name: SonarQube analysis
     runs-on: ubuntu-latest
     steps:
-      #Set up Maven cache
-      - name: Cache Maven packages
-        #This action allows caching dependencies and build outputs to improve workflow execution time.
-        uses: actions/cache@v1
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      # Setup SonarQube server and run scan
+          java-version: '11'
       - name: SonarQube Scan
-        # run: ./mvnw -B verify sonar:sonar -Dsonar.projectKey=baralga -Dsonar.organization=baralga -Dsonar.host.url=host -Dsonar.login=login
+        # run: ./mvnw -B verify sonar:sonar -Dsonar.projectKey=baralga -Dsonar.organization=baralga -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
         run: |
           pwd
           ls -ltr
