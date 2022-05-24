@@ -5,7 +5,6 @@ on:
     branches:
       - develop
       - 'bugfix-*'
-
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
@@ -72,4 +71,3 @@ jobs:
     steps:
       - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
     # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
-
