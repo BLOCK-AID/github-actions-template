@@ -20,6 +20,7 @@ on:
 jobs:
   call-sonar-workflow:
     uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
+    secrets: inherit
 
   call-trivy-workflow:
     uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
@@ -30,5 +31,6 @@ jobs:
   call-build-workflow:
     uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
 
-  # call-deploy-workflow:
-  #   uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
+  call-deploy-workflow:
+    uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
+
