@@ -19,21 +19,43 @@ on:
 
 jobs:
   call-sonar-workflow:
-    uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
-    secrets:
-      host: ${{ secrets.SONARQUBE_HOST }}
-      login: ${{ secrets.SONARQUBE_TOKEN }}
+    if: github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'The label was bug'
+
+    # uses: BLOCK-AID/github-actions-template/.github/workflows/sonar.yml@feature-1
+    # secrets:
+    #   host: ${{ secrets.SONARQUBE_HOST }}
+    #   login: ${{ secrets.SONARQUBE_TOKEN }}
 
   call-trivy-workflow:
-    uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
+    if: github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'The label was bug'
+
+    # uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
 
   call-test-workflow:
-    uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@feature-1
+    if: github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'The label was bug'
+    # uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@feature-1
 
   call-build-workflow:
-    uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
+    if: github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'The label was bug'
+    # uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
 
   call-deploy-workflow:
+    if: github.event.label.name == 'bug'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'The label was bug'
     needs: call-build-workflow
-    uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
+    # uses: BLOCK-AID/github-actions-template/.github/workflows/deploy.yml@feature-1
 
