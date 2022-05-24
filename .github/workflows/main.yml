@@ -37,6 +37,7 @@ jobs:
 
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only')"
+    needs: log-env
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sca-only'
@@ -48,6 +49,7 @@ jobs:
 
   call-scan-workflow:
     if: "contains(github.event.head_commit.message, 'sast-only')"
+    needs: log-env
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sast-only'
@@ -56,6 +58,7 @@ jobs:
 
   call-test-workflow:
     if: "contains(github.event.head_commit.message, 'test-only')"
+    needs: log-env
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was test-only'
