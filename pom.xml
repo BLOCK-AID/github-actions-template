@@ -106,7 +106,7 @@
 				<!-- <sonar.sources>${project.build.directory}/src/main/java/</sonar.sources> -->
 				<sonar.scm.provider>git</sonar.scm.provider>
 				<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-				<sonar.java.binaries>**/target/classes</sonar.java.binaries>
+				<!-- <sonar.java.binaries>**/target/classes</sonar.java.binaries> -->
             </properties>
         </profile>
     </profiles>
