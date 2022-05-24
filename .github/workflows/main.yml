@@ -1,36 +1,22 @@
 name: CI Pipeline - Main Workflow
 on:
-
   #Trigger the workflow on push from the develop branch
-  # label:
-  #   types:
-  #     - on-going work
-  #     - test-only
-  #     - sca-only
-  #     - scan-only
-  #     - test-only
-  #     - buid-only
   push:
     branches:
       - 'feature-*'
       - master
       - develop
-    # issues:
-    #   types: [synchronize, opened, reopened, labeled, unlabeled]
-
-  # label:
-  #   types: [created, edited]
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}
   
 jobs:
-  log-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log ENV Variables
-        run: |
-          echo "WF_MESSAGE: ${WF_MESSAGE}"
+#   log-env:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Log ENV Variables
+#         run: |
+#           echo "WF_MESSAGE: ${WF_MESSAGE}"
 
   dump-github-context:
     runs-on: ubuntu-latest
@@ -40,7 +26,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          echo "$GITHUB_CONTEXT.event.commits.message"
 
   dump-job-context:
     runs-on: ubuntu-latest
@@ -51,7 +36,7 @@ jobs:
         run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
-    if: github.event.label.name == 'sca-only'
+    if: contains(${{ github.event.head_commit.message }}, 'sca-only')
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sca-only'
@@ -62,7 +47,7 @@ jobs:
     #   login: ${{ secrets.SONARQUBE_TOKEN }}
 
   call-trivy-workflow:
-    if: github.event.label.name == 'sast-only'
+    if: contains(${{ github.event.head_commit.message }}, 'sast-only')
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was sast-only'
@@ -70,21 +55,21 @@ jobs:
     # uses: BLOCK-AID/github-actions-template/.github/workflows/trivy.yml@feature-1
 
   call-test-workflow:
-    if: contains(${{ github.event.head_commit.message }}, 'test-only' )
+    if: contains(${{ github.event.head_commit.message }}, 'test-only')
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was test-only'
     # uses: BLOCK-AID/github-actions-template/.github/workflows/test.yml@feature-1
 
   call-build-workflow:
-    if: github.event.label.name == 'build-only'
+    if: contains(${{ github.event.head_commit.message }}, 'build-only')
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was build-only'
     # uses: BLOCK-AID/github-actions-template/.github/workflows/build.yml@feature-1
 
   call-deploy-workflow:
-    if: github.event.label.name == 'deploy'
+    if: contains(${{ github.event.head_commit.message }}, 'deploy')
     runs-on: ubuntu-latest
     steps:
       - run: echo 'The label was deploy'
