@@ -13,11 +13,6 @@ jobs:
   # Jobs are controlled by the commit message flags in [...], they are:
   # skip-actions  : run no jobs
   # all-jobs  : run all jobs
-  # sca-only  : run SonarQube only
-  # scan-only : run SAST scans only
-  # test-only : run unit tests
-  # build-only : build binary / image
-  # deploy    : deploy application locally (stand alone jave, docker, or kubernetes)
   # merge  : raise Pull Request to merge feature to master branch and tag
 
   log-env:
