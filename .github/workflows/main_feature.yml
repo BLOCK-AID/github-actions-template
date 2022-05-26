@@ -93,6 +93,6 @@ jobs:
     # needs: call-build-workflow
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
+      - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
     # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
