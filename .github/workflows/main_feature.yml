@@ -1,17 +1,17 @@
 name: CI Pipeline - Feature Branch Workflow
 on:
   #Trigger the workflow on push to the feature branch
-  # push:
-  #   branches:
-  #     - 'feature-*'
-
-  pull_request:
-    types: 
-      - synchronize
-      - labeled
-      - unlabeled
+  push:
     branches:
-      - develop
+      - 'feature-*'
+
+  # pull_request:
+  #   types: 
+  #     - synchronize
+  #     - labeled
+  #     - unlabeled
+  #   branches:
+  #     - develop
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
