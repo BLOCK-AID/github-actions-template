@@ -26,6 +26,7 @@ Develop templates to implement the different triggering mechanism for specific c
    
 
 ```
+> gh pr create -B develop -d -a @me -t "PR for feature set" -b "Initilization" -l sast-only
 > git add .
 > git commit -m "My message.  [skip-actions]"
 > git push 
