@@ -36,8 +36,10 @@ jobs:
       - name: Dump CitHub Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_REF: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+          echo "$GITHUB_REF"
 
   # dump-job-context:
     # runs-on: ubuntu-latest
