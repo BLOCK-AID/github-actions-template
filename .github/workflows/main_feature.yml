@@ -1,9 +1,9 @@
 name: CI Pipeline - Feature Branch Workflow
 on:
   #Trigger the workflow on push to the feature branch
-  push:
-    branches:
-      - 'feature-*'
+  # push:
+  #   branches:
+  #     - 'feature-*'
 
   pull_request:
     types: 
