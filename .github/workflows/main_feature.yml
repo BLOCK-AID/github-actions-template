@@ -39,6 +39,8 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+          echo ${{ github.event.head_commit.message }}
+          echo ${{ github.event.pull_request.labels.name }}
 
   # dump-job-context:
     # runs-on: ubuntu-latest
@@ -61,13 +63,13 @@ jobs:
 
   call-scan-workflow:
     # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    # if: "contains(github.event.head_commit.message, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.head_commit.message, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
     needs: log-env
     runs-on: ubuntu-latest
     steps:
       - run: 
-          echo ${{ github.event.head_commit.message }}
-          echo ${{ github.event.pull_request.labels.name }}
+          echo ${{github.event.head_commit.message}}
+          echo ${{github.event.pull_request.labels.name}}
     # uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@master
 
   call-test-workflow:
