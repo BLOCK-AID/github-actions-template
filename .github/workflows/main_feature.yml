@@ -6,7 +6,7 @@ on:
   #     - 'feature-*'
 
   pull_request:
-    types: [ labeled ]
+    types: [ opened ]
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
@@ -69,8 +69,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: 
-          echo "Running scan workflow"
-          echo "$github.event.pull_request.labels.name"
+          echo ${{github.event.head_commit.message}}
+          echo ${{github.event.pull_request.labels.name}}
     # uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@master
 
   call-test-workflow:
