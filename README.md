@@ -26,6 +26,7 @@ Develop templates to implement the different triggering mechanism for specific c
    
 
 ```
+### raise initial PR for code development
 > gh pr create -B develop -d -a @me -t "feature set" -b "Initilization" -l sast-only
 > gh pr list -B develop -s open
 > gh pr edit 13 --add-label "sca-only,test-only"
