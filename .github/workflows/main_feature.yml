@@ -30,7 +30,7 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
-          echo "WF_ACTION: " + ${{ github.event.head_commit.message }}
+          echo "WF_ACTION: ${{ github.event.head_commit.message }}"
 
   dump-github-context:
     runs-on: ubuntu-latest
