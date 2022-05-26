@@ -6,7 +6,10 @@ on:
   #     - 'feature-*'
 
   pull_request:
-    # types: [ opened ]
+    types: 
+      - opened
+    branches:
+      - develop
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
