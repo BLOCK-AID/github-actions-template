@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
 
-  # dump-github-context:
+  dump-github-context:
     runs-on: ubuntu-latest
     steps:
       - name: Dump CitHub Context
@@ -38,12 +38,12 @@ jobs:
           echo "$GITHUB_CONTEXT"
 
   # dump-job-context:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump Job Context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - name: Dump Job Context
+    #     env:
+    #       JOB_CONTEXT: ${{ toJson(job) }}
+    #     run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
     if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
