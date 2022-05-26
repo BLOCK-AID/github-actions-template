@@ -5,13 +5,13 @@ on:
     branches:
       - 'feature-*'
 
-  # pull_request:
-  #   types: 
-  #     - synchronize
-  #     - labeled
-  #     - unlabeled
-  #   branches:
-  #     - develop
+  pull_request:
+    types: 
+      - synchronize
+      - labeled
+      - unlabeled
+    branches:
+      - develop
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
