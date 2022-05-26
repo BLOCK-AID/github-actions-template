@@ -6,6 +6,7 @@ on:
   #     - 'feature-*'
 
   pull_request:
+    types:[ labeled ]
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
@@ -63,7 +64,7 @@ jobs:
 
   call-scan-workflow:
     # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    # if: "contains(github.event.head_commit.message, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.label.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
     needs: log-env
     runs-on: ubuntu-latest
     steps:
