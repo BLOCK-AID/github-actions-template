@@ -1,15 +1,9 @@
 name: CI Pipeline - Feature Branch Workflow
 on:
-  #Trigger the workflow on push to the feature branch
-  # push:
-  #   branches:
-  #     - 'feature-*'
-
+  #Trigger the workflow on PR from feature branch to develop branch
   pull_request:
     types: 
       - synchronize
-      # - labeled
-      # - unlabeled
     branches:
       - develop
 
@@ -18,7 +12,7 @@ env:
   WF_ACTION: ${{ github.event.head_commit.message }}  #get message from commit
   
 jobs:
-  # Jobs are controlled by the commit message flags in [...], they are:
+  # Jobs are controlled by the PR labels , they are:
   # skip-actions  : run no jobs
   # all-jobs  : run all jobs
   # sca-only  : run SonarQube only
@@ -57,7 +51,7 @@ jobs:
     #     run: echo "$JOB_CONTEXT"
 
   call-sonar-workflow:
-    if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
     # runs-on: ubuntu-latest
     # steps:
@@ -69,17 +63,16 @@ jobs:
 
   call-scan-workflow:
     # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    if: "contains(github.event.pull_request.labels.*.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'sast-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
     runs-on: ubuntu-latest
     steps:
       - run: 
           echo ${{github.event.head_commit.message}}
-          echo ${{github.event.pull_request.labels.name}}
     # uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@master
 
   call-test-workflow:
-    if: "contains(github.event.head_commit.message, 'test-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'test-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
     # runs-on: ubuntu-latest
     # steps:
@@ -87,7 +80,7 @@ jobs:
     uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@master
 
   call-build-workflow:
-    if: "contains(github.event.head_commit.message, 'build-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: [call-sonar-workflow, call-scan-workflow, call-test-workflow]
     # runs-on: ubuntu-latest
     # steps:
@@ -95,7 +88,7 @@ jobs:
     uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@master
 
   call-deploy-workflow:
-    if: "contains(github.event.head_commit.message, 'deploy') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: call-build-workflow
     # runs-on: ubuntu-latest
     # steps:
@@ -103,7 +96,7 @@ jobs:
     uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
   call-raisepr-workflow:
-    if: "contains(github.event.head_commit.message, 'raise-pr') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     # needs: call-build-workflow
     runs-on: ubuntu-latest
     steps:
