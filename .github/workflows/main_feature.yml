@@ -9,6 +9,7 @@ on:
 
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
+  WF_ACTION: ${{ github.event.head_commit.message }}  #get message from commit
   
 jobs:
   # Jobs are controlled by the commit message flags in [...], they are:
@@ -29,17 +30,16 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
+          echo "WF_ACTION: " + ${{ github.event.head_commit.message }}
 
   dump-github-context:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump CitHub Context
+      - name: Dump GitHub Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          GITHUB_REF: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          echo "$GITHUB_REF"
 
   # dump-job-context:
     # runs-on: ubuntu-latest
@@ -63,10 +63,10 @@ jobs:
   call-scan-workflow:
     if: "contains(github.event.head_commit.message, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
     needs: log-env
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - run: echo 'Running sast-only'
-    uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@master
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Running sast-only'
+    # uses: BLOCK-AID/ci_workflows/.github/workflows/trivy.yml@master
 
   call-test-workflow:
     if: "contains(github.event.head_commit.message, 'test-only') || contains(github.event.head_commit.message, 'all-jobs')" 
