@@ -8,6 +8,8 @@ on:
   pull_request:
     types: 
       - opened
+      - labeled
+      - unlabeled
     branches:
       - develop
 
