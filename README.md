@@ -114,6 +114,7 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 
 ```
 > git checkout develop
+> git pull
 > gh pr list -H feature-1 
 > gh pr edit 13 --add-label "all-jobs"
 > git add .
@@ -132,6 +133,7 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 
 ```
 > git checkout master
+> git pull
 > git add .
 > git commit -m "My message.  [skip-actions]"
 > git push 
