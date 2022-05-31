@@ -6,24 +6,14 @@ on:
       - synchronize
     branches:
       - develop
+      - feature-*
 
 env:
   WF_PR_NUMBER: ${{ github.event.number }}
-  WF_PR_LABELS: ${{ github.event.issue.labels.*.name }}
+  WF_PR_LABELS: ${{ github.event.issue.labels }}
   WF_BRANCH: ${{ github.head_ref }} 
   
 jobs:
-  # Jobs are controlled by the PR labels , they are:
-  # skip-actions  : run no jobs
-  # all-jobs  : run all jobs
-  # sca-only  : run SonarQube only
-  # scan-only : run SAST scans only
-  # test-only : run unit tests
-  # build-only : build binary / image
-  # deploy    : deploy application locally (stand alone jave, docker, or kubernetes)
-  # merge  : raise Pull Request to merge feature to develop branch
-  # raise-pr  : raise Pull Request to move feature to develop branch
-
   dump-github-context:
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +26,6 @@ jobs:
           echo ${{ env.JOB_ACTION }}
           echo ${{ env.PR_NUMBER }}
           
-
   dump-job-context:
     runs-on: ubuntu-latest
     steps:
@@ -47,6 +36,7 @@ jobs:
         run: echo ${{ env.JOB_STATUS }}
 
   log-env:
+    if: "contains(env.WF_PR_LABELS, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: [dump-github-context, dump-job-context]
     runs-on: ubuntu-latest
     steps:
@@ -107,7 +97,7 @@ jobs:
 
   call-raisepr-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    # needs: call-build-workflow
+    needs: call-build-workflow
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'

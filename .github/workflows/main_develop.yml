@@ -1,18 +1,17 @@
 name: CI Pipeline - Develop Branch Workflow
+
 on:
-  #Trigger the workflow on push to the feature branch
   push:
-    branches:
-      - develop
-      - 'bugfix-*'
+    branches: ['development']
+  pull_request:
+    branches: ['development']
+  schedule:
+    - cron: '0 19 * * 0'
+
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
 jobs:
-  # Jobs are controlled by the commit message flags in [...], they are:
-  # skip-actions  : run no jobs
-  # all-jobs  : run all jobs
-  # merge  : raise Pull Request to merge feature to master branch and tag
 
   log-env:
     runs-on: ubuntu-latest

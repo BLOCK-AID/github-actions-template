@@ -66,42 +66,41 @@ This pipeline essentially covers all aspect of code creation, testing, compilati
 
 Make sure there are no labels already assigned, you can execute the following steps using the GitHub GUI or using gl code against the current feature branch:
 ```
-### raise initial PR for code development
+### raise initial PR for code development and return PR #
 > gh pr create -B develop -d -a @me -t "feature set" -b "Initilization"
-> gh pr list -H feature-1
-
-> gh pr edit 13 --add-label "sca-only,test-only"
-> gh pr edit 13 --remove-label "test-only"
-> git add .
-> git commit -m "My commit message"
-> git push 
+> gh pr list -H feature-1       
 ```
 
-2. Feature Branch Push - Code Scans (CVEs & SCA)     
+2. Feature Branch Push - Code Scans (SCA & SAST)     
 
 ```
+> gh pr edit 13 --add-label "sca-only,sast-only"
 > git add .
-> git commit -m "Fixed code -  [sca-only,scan-only]"
+> git commit -m "Fixed code - perform SCA & SAST scans"
 > git push 
 ```
 
 3. Feature Branch Push - Unit Test    
 
 ```
+> gh pr edit 13 --remove-label "sca-only,sast-only"
+> gh pr edit 13 --add-label "test-only"
 > git add .
-> git commit -m "Fixed code -  [test-only]"
+> git commit -m "Fixed code - perform test"
 > git push 
 ```
 
 4. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
 
 ```
+> gh pr edit 13 --remove-label "test-only"
+> gh pr edit 13 --add-label "all-jobs"
 > git add .
-> git commit -m "Fixed code -  [all-jobs]"
+> git commit -m "Fixed code - execute all jobs from workflow"
 > git push  
 ```
 
-5. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch
+5. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch via GUI or CLI.
 
 ```
 If you are alone working on FeatureB branch, the a pull --rebase develop is the best practice: you are replaying FeatureB changes on top of FeatureA. (and git push --force after).
@@ -115,36 +114,14 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 
 ```
 > git checkout develop
+> gh pr list -H feature-1 
+> gh pr edit 13 --add-label "all-jobs"
 > git add .
-> git commit -m "My message.  [skip-actions]"
+> git commit -m "My message - build, test, and merge to master branch"
 > git push 
 ```
 
-2. Develop Branch Push - Full Scans & Tests  
-    
-```
-> git add .
-> git commit -m "Fixed code -  [sca-only,scan-only,test-only]"
-> git push 
-```
-
-3. BugFix Branch - Full Scans & Tests 
-
-```
-> git add .
-> git commit -m "Fixed code -  [sca-only,scan-only,test-only]"
-> git push 
-```
-
-4. Develop Branch Push - Ready for Pull Request (PR) to Master Branch
-
-```
-> git add .
-> git commit -m "Fixed code -  [all-jobs]"
-> git push  
-```
-
-5. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch and Tag
+2. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch and Tag
 
 ```
 ```
@@ -180,6 +157,6 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 
 ```
 > git add .
-> git commit -m "Fixed code -  [create-image]"
+> git commit -m "Fixed code -  create-image"
 > git push  
 ```
