@@ -42,7 +42,8 @@ jobs:
       - name: Dump Job Context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo $JOB_CONTEXT
+          JOB_STATUS: ${{ job.status }}
+        run: echo ${{ env.JOB_CONTEXT }}
 
   log-env:
     needs: [dump-github-context, dump-job-context]
