@@ -9,7 +9,7 @@ on:
 
 env:
   WF_PR_NUMBER: ${{ github.event.number }}
-  WF_PR_LABELS: ${{ (github.event.pull_request.labels }}
+  WF_PR_LABELS: ${{ github.event.issue.labels }}
   WF_BRANCH: ${{ github.head_ref }} 
   
 jobs:
