@@ -30,6 +30,7 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
+          gh auth login --hostname GitHub.com
           gh pr list -H feature-1
 
 
