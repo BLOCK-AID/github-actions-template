@@ -64,7 +64,7 @@ This pipeline essentially covers all aspect of code creation, testing, compilati
 
 1. Feature Branch Push - No Actions   
 
-Make sure there are no labels already assigned, then execute the following code against the feature branch:
+Make sure there are no labels already assigned, you can execute the following steps using the GitHub GUI or using gl code against the current feature branch:
 ```
 ### raise initial PR for code development
 > gh pr create -B develop -d -a @me -t "feature set" -b "Initilization"
