@@ -31,10 +31,11 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           JOB_ACTION: ${{ github.event.action }}
-          PR_LABELS: ${{ github.event.pull_request.labels.name }}
+          PR_LABELS: ${{ github.event.pull_request.action }}
+          PR_NUMBER: ${{ github.event..number }}
         run: |
           echo ${{ env.JOB_ACTION }}
-          echo ${{ env.PR_LABELS }}
+          echo ${{ env.NUMBER }}
           echo ${{ env.GITHUB_CONTEXT }}
 
 
