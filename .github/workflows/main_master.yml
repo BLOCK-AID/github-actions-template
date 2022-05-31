@@ -6,26 +6,52 @@ on:
       - master
       - 'hotfix-*'
   pull_request:
+    types: 
+      - synchronize
     branches: ['master']
     
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
 jobs:
-  # Jobs are controlled by the commit message flags in [...], they are:
-  # skip-actions  : run no jobs
-  # all-jobs  : run all jobs
-  # create-image  : deploy application locally (stand alone jave, docker, or kubernetes)
+  dump-github-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          JOB_ACTION: ${{ github.event.action }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          echo ${{ env.JOB_ACTION }}
+          echo ${{ env.PR_NUMBER }}
+          
+  dump-job-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Job Context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+          JOB_STATUS: ${{ job.status }}
+        run: echo ${{ env.JOB_STATUS }}
 
   log-env:
+    # if: "contains($WF_PR_LABELS, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [dump-github-context, dump-job-context]
     runs-on: ubuntu-latest
     steps:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
-          
+
+# This job is run under the following conditions:
+#   - label : [all-jobs]
+#   - label : [sca-only, ...]
+#   - label : [raise-pr, ...]
+#   - label : [merge, ...]
+# 
   call-sca-workflow:
-    if: "contains(github.event.head_commit.message, 'sca-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
     # runs-on: ubuntu-latest
     # steps:
@@ -36,41 +62,43 @@ jobs:
       login: ${{ secrets.SONARQUBE_TOKEN }}
 
   call-sast-workflow:
-    if: "contains(github.event.head_commit.message, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'sast-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
     # runs-on: ubuntu-latest
     # steps:
-    #   - run: echo 'Running sast-only'
+    #   - run: 
+    #       echo ${{github.event.head_commit.message}}
     uses: BLOCK-AID/ci_workflows/.github/workflows/sast.yml@master
 
   call-test-workflow:
-    if: "contains(github.event.head_commit.message, 'test-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    needs: log-env
+    if: "contains(github.event.pull_request.labels.*.name, 'test-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [log-env, call-build-workflow]
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running test-only'
     uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@master
 
   call-build-workflow:
-    if: "contains(github.event.head_commit.message, 'build-only') || contains(github.event.head_commit.message, 'all-jobs')" 
-    needs: [call-sonar-workflow, call-scan-workflow, call-test-workflow]
+    if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [call-sca-workflow, call-sast-workflow]
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running build-only'
     uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@master
 
   call-deploy-workflow:
-    if: "contains(github.event.head_commit.message, 'deploy') || contains(github.event.head_commit.message, 'all-jobs')" 
-    needs: call-build-workflow
+    if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: call-test-workflow
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running local deploy'
     uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
   call-raisepr-workflow:
-    if: "contains(github.event.head_commit.message, 'raise-pr') || contains(github.event.head_commit.message, 'all-jobs')" 
-    # needs: call-build-workflow
+    if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: call-test-workflow
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Raising - Updating PR to merge feature branch to develop branch'
+      - run: echo 'Raising - Updating PR with label to merge develop branch to master branch'
     # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
