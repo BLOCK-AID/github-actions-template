@@ -67,8 +67,9 @@ This pipeline essentially covers all aspect of code creation, testing, compilati
 Make sure there are no labels already assigned, then execute the following code against the feature branch:
 ```
 ### raise initial PR for code development
-> gh pr create -B develop -d -a @me -t "feature set" -b "Initilization" -l sast-only
-> gh pr list -B develop -s open
+> gh pr create -B develop -d -a @me -t "feature set" -b "Initilization"
+> gh pr list -H feature-1
+
 > gh pr edit 13 --add-label "sca-only,test-only"
 > gh pr edit 13 --remove-label "test-only"
 > git add .
