@@ -35,7 +35,7 @@ jobs:
           PR_NUMBER: ${{ github.event..number }}
         run: |
           echo ${{ env.JOB_ACTION }}
-          echo ${{ env.NUMBER }}
+          echo ${{ env.PR_NUMBER }}
           echo ${{ env.GITHUB_CONTEXT }}
 
 
