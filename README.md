@@ -9,22 +9,62 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 + Scheduled times
 + Manual
 
-## CI/CD Workflow
+## Required Software
+In order to get finer grain control of GitHub Pull Request from the command line, we need to get GitHub CLI, or gh, which is a command-line interface to GitHub for use in terminal or scripts.
+It could be installed on Windows, Linux, and Mac as per:
 
+Refs:
+    + https://cli.github.com/manual/
+#
+## CI/CD Workflow
+A pipeline as code file specifies the stages, jobs, and actions for a pipeline to perform. Because the file is versioned, changes in pipeline code can be tested in branches with the corresponding application release.
+
++ The pipeline as code model of creating continuous integration pipelines and continuous deployment is an industry best practice addressing the following pain points: 
++ Auditing was limited to what was already built-in
++ Developers and Operations Team were unable to collaborate
++ Troubleshooting problems across applications and infrastructure was difficult
++ Difficult to rollback changes to the last known configuration
++ Pipelines prone to breaking
+
+A high level diagram illustrating the different activities across a CI/CD Pipeline is depicted herein:
+
+<img src="images/GitHub-GitOps.png" alt="drawing" width="600"/>
+
+This diagram delineates the different actions executed by the PBS DevSecOps teams, they are:
+
++ Development Team (Dev) responsible for:
+    + Code creation and management for all applications
+    + Unit & Integration Testing
+    + Generation of artifacts (binaries and docker images)
+
++ Security Team (Sec) responsible for:
+    + Establishing security policies and supporting tools
+    + Constantly monitoring for vulnerabilities from development to production
+    + Responsible for addressing security breaches
+    + Manage the Software Bill of Material (SBoM) and CVE advisories
+
++ Operations Team (Ops)  responsible for:
+    + Create virtual servers and networking across all environments
+    + Deploy, manage, and monitor kubernetes clusters
+
+These activities are managed under the teams' respective workflows that are also dovetailing on each other to provide maximum coverage throughout the enterprise.  For this project, only the Development (GitHub Actions) part of the CI/CD pipeline is presented.
+#
 ### GitHub Actions - Continuous Integration
 Develop templates to implement the different triggering mechanism for specific conditions supporting the Master Git Workflow as presented below:
 
-<img src="images/ci-cd-workflow.png" alt="drawing" width="600"/>
+<img src="images/GitHub-Actions-Workflow.png" alt="drawing" width="600"/>
 
-### GitOps - Continuous Deployment
+This pipeline essentially covers all aspect of code creation, testing, compilation, and version management.  So our development pipeline must be able to automate as much as possible of the following GitHub Workflow:
+#
 
 ## GitHub Action Workflow Templates
+
 
 ### Feature Branch Workflows
 
 1. Feature Branch Push - No Actions   
-   
 
+Make sure there are no labels already assigned, then execute the following code against the feature branch:
 ```
 ### raise initial PR for code development
 > gh pr create -B develop -d -a @me -t "feature set" -b "Initilization" -l sast-only
