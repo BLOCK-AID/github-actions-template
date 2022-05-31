@@ -53,53 +53,53 @@ jobs:
   call-sca-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Running sca-only'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/sca.yml@master
-    # secrets:
-    #   host: ${{ secrets.SONARQUBE_HOST }}
-    #   login: ${{ secrets.SONARQUBE_TOKEN }}
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running sca-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/sca.yml@master
+    secrets:
+      host: ${{ secrets.SONARQUBE_HOST }}
+      login: ${{ secrets.SONARQUBE_TOKEN }}
 
   call-sast-workflow:
     # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
     if: "contains(github.event.pull_request.labels.*.name, 'sast-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: log-env
-    runs-on: ubuntu-latest
-    steps:
-      - run: 
-          echo ${{github.event.head_commit.message}}
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/sast.yml@master
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: 
+    #       echo ${{github.event.head_commit.message}}
+    uses: BLOCK-AID/ci_workflows/.github/workflows/sast.yml@master
 
   call-test-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'test-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: [log-env, call-build-workflow]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Running test-only'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@master
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running test-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@master
 
   call-build-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: [call-sca-workflow, call-sast-workflow]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Running build-only'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@master
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running build-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@master
 
   call-deploy-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: call-build-workflow
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Running local deploy'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running local deploy'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
   call-raisepr-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: call-build-workflow
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
 
