@@ -30,12 +30,12 @@ jobs:
       - name: Dump GitHub Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          JOB_ACTION: ${{ matrix.greeting }}
+          JOB_ACTION: ${{ github.event.action }}
           PR_LABELS: ${{ github.event.pull_request.labels.name }}
         run: |
-          echo $JOB_ACTION
-          echo $PR_LABELS
-          echo $GITHUB_CONTEXT
+          echo ${{ env.JOB_ACTION }}
+          echo ${{ PR_LABELS }}
+          echo ${{ GITHUB_CONTEXT }}
 
 
   dump-job-context:
@@ -53,8 +53,6 @@ jobs:
       - name: Log ENV Variables
         run: |
           echo "WF_MESSAGE: ${WF_MESSAGE}"
-          gh auth login --hostname GitHub.com
-          gh pr list -H feature-1
 
   call-sca-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
