@@ -87,7 +87,7 @@ jobs:
 
   call-deploy-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: call-build-workflow
+    needs: call-test-workflow
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running local deploy'
@@ -95,7 +95,7 @@ jobs:
 
   call-raisepr-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: call-build-workflow
+    needs: call-test-workflow
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
