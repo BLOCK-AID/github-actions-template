@@ -73,7 +73,7 @@ jobs:
 
   call-test-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'test-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: log-env
+    needs: [log-env, call-build-workflow]
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Running test-only'
@@ -81,7 +81,7 @@ jobs:
 
   call-build-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: [call-sca-workflow, call-sast-workflow, call-test-workflow]
+    needs: [call-sca-workflow, call-sast-workflow]
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Running build-only'
