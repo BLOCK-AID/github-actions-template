@@ -3,7 +3,10 @@ name: CI Pipeline - Develop Branch Workflow
 on:
   push:
     branches: ['develop']
+    
   pull_request:
+    types: 
+      - synchronize
     branches: ['develop']
   # schedule:
   #   - cron: '0 19 * * 0'
