@@ -24,26 +24,19 @@ jobs:
   # raise-pr  : raise Pull Request to move feature to develop branch
   #
 
-  log-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log ENV Variables
-        run: |
-          echo "WF_MESSAGE: ${WF_MESSAGE}"
-          gh auth login --hostname GitHub.com
-          gh pr list -H feature-1
-
-
   dump-github-context:
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          JOB_ACTION: ${{ matrix.greeting }}
+          PR_LABELS: ${{ github.event.pull_request.labels.name }}
         run: |
+          echo "$JOB_ACTION"
+          echo "$PR_LABELS"
           echo "$GITHUB_CONTEXT"
-          echo ${{ github.event.head_commit.message }}
-          echo ${{ github.event.pull_request.labels.name }}
+
 
   dump-job-context:
     runs-on: ubuntu-latest
@@ -52,6 +45,16 @@ jobs:
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
+
+  log-env:
+    needs: [dump-github-context, dump-job-context]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log ENV Variables
+        run: |
+          echo "WF_MESSAGE: ${WF_MESSAGE}"
+          gh auth login --hostname GitHub.com
+          gh pr list -H feature-1
 
   call-sca-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
