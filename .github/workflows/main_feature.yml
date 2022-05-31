@@ -33,9 +33,9 @@ jobs:
           JOB_ACTION: ${{ matrix.greeting }}
           PR_LABELS: ${{ github.event.pull_request.labels.name }}
         run: |
-          echo "$JOB_ACTION"
-          echo "$PR_LABELS"
-          echo "$GITHUB_CONTEXT"
+          echo $JOB_ACTION
+          echo $PR_LABELS
+          echo $GITHUB_CONTEXT
 
 
   dump-job-context:
