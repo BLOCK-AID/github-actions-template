@@ -115,8 +115,11 @@ If you are alone working on FeatureB branch, the a pull --rebase develop is the 
 ```
 > git checkout develop
 > git pull
-> gh pr list -H feature-1 
-> gh pr edit 13 --add-label "all-jobs"
+> gh pr create -B master -d -a @me -t "Develop Branch set" -b "Merging all features"
+> gh pr list -H develop    
+> gh pr edit 17 --add-label "all-jobs"
+
+### Make any changes then commit
 > git add .
 > git commit -m "My message - build, test, and merge to master branch"
 > git push 

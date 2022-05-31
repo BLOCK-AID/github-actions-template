@@ -96,7 +96,7 @@ jobs:
   call-raisepr-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
     needs: call-test-workflow
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
-    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Raising - Updating PR with label to merge develop branch to master branch'
+    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
