@@ -35,7 +35,7 @@ jobs:
         run: |
           echo ${{ env.JOB_ACTION }}
           echo ${{ env.PR_NUMBER }}
-          echo ${{ env.GITHUB_CONTEXT }}
+          echo $GITHUB_CONTEXT
 
   dump-job-context:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Dump Job Context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo ${{ env.JOB_CONTEXT }}
+        run: echo $JOB_CONTEXT
 
   log-env:
     needs: [dump-github-context, dump-job-context]
