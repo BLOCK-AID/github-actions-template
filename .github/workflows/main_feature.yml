@@ -83,7 +83,7 @@ jobs:
 
   call-build-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: [call-sonar-workflow, call-scan-workflow, call-test-workflow]
+    needs: [call-sca-workflow, call-sast-workflow, call-test-workflow]
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Running build-only'
