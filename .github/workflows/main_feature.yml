@@ -34,8 +34,8 @@ jobs:
           PR_LABELS: ${{ github.event.pull_request.labels.name }}
         run: |
           echo ${{ env.JOB_ACTION }}
-          echo ${{ PR_LABELS }}
-          echo ${{ GITHUB_CONTEXT }}
+          echo ${{ env.PR_LABELS }}
+          echo ${{ env.GITHUB_CONTEXT }}
 
 
   dump-job-context:
