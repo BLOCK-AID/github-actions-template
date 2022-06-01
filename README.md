@@ -9,7 +9,14 @@ Workflow triggers are events that cause a workflow to run.  These events can be:
 + Scheduled times
 + Manual
 
-## Required Software
+## Prerequisites
+### Secrets
+You need to add the following secrets to GitHub Settings under Organization Secrets (recommended) for that repos:
+
++ SONARQUBE_HOST
++ SONARQUBE_TOKEN
+
+### GitHub CLI
 In order to get finer grain control of GitHub Pull Request from the command line, we need to get GitHub CLI, or gh, which is a command-line interface to GitHub for use in terminal or scripts.
 It could be installed on Windows, Linux, and Mac as per:
 
