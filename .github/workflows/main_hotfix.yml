@@ -1,0 +1,4 @@
+# Create hotfix-branch from develop
+# Commit to hotfix-branch
+# Merge hotfix-branch into develop
+# Rebase (or cherry-pick) hotfix-branch onto release

@@ -1,13 +1,18 @@
 name: CI Pipeline - Feature Branch Workflow
 
+# Trigger the workflow on:
+# - PR from feature branch to develop branch
+# - On new tags only
 on:
-  #Trigger the workflow on PR from feature branch to develop branch
   pull_request:
     types: 
       - synchronize
     branches:
       - develop
       - feature-*
+  push:
+    tags:
+      - '*'
 
 env:
   WF_PR_NUMBER: ${{ github.event.number }}

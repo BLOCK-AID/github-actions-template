@@ -1,8 +1,11 @@
 name: CI Pipeline - Develop Branch Workflow
 
+
 on:
   push:
     branches: ['develop']
+    tags:
+      - '*'
   pull_request:
     types: 
       - synchronize
