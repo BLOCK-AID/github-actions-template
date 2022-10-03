@@ -1,8 +1,13 @@
 name: CI Pipeline - Develop Branch Workflow
 
+# Trigger the workflow on:
+# - PR from develop branch to develop master
+
 on:
   push:
     branches: ['develop']
+    tags:
+      - '*'
   pull_request:
     types: 
       - synchronize

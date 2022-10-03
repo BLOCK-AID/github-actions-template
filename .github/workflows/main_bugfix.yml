@@ -1,21 +1,24 @@
-name: CI Pipeline - Master Branch Workflow
+name: CI Pipeline - BugFix Branch Workflow
 
-# Step 1 - Merge release-branch to master on PR
-# Step 2 - Merge hotfix-branch to master on PR
-# Step 3 - Merge & Squash master to develop on major version tag
-
-# Trigger the workflow on PR abd major version tag
+# Step 1 - Create bugfix-branch from develop
+# Step 2 - Commit to bugfix-branch
+# Step 3 - Merge bugfix-branch into develop
+# Step 4 - Rebase (or cherry-pick) hotfix-branch onto release
+# Trigger based on new tags
 
 on:
   push:
+    branches: ['bugfix-']
     tags:
-      - 'v*'
+      - '*'
   pull_request:
     types: 
       - synchronize
-    branches: 
-      - 'master'
-    
+    branches:
+      - bugfix-*
+  # schedule:
+  #   - cron: '0 19 * * 0'
+
 env:
   WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
   
