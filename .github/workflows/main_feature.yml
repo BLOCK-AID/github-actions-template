@@ -1,5 +1,11 @@
 name: CI Pipeline - Feature Branch Workflow
 
+# Step 1 - Create feature-branch from develop
+# Step 2 - Commit to feature-branch
+#           + soft commit: no new tag/PR
+#           + hard commit: new tag/PR
+# Step 3 - Merge feature-branch to develop on PR
+
 # Trigger the workflow on:
 # - PR from feature branch to develop branch
 # - On new tags only

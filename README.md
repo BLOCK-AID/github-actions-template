@@ -1,14 +1,16 @@
 # github-actions-template
-Templates for GitHub Actions
-#
+Triggers for GitHub Actions with Reusable Workflows
+
 ## Events that trigger workflows
 Workflow triggers are events that cause a workflow to run.  These events can be:
 
-+ Events that occur in your workflow's repository using event activity types & filters
++ Events that occur in your workflow's repository using event activity types & filters such as:
+    + Pull Request
+    + Semantic versioning (tags): major.minor.patch
+    + Labels
 + Events that occur outside of GitHub and trigger a repository_dispatch event on GitHub
-+ Scheduled times
++ Scheduled times (cron)
 + Manual
-
 ## Prerequisites
 ### Secrets
 You need to add the following secrets to GitHub Settings under Organization Secrets (recommended) for that repos:
@@ -23,7 +25,7 @@ It could be installed on Windows, Linux, and Mac as per:
 Refs:
     + https://cli.github.com/manual/
 #
-## CI/CD Workflow
+# CI/CD Workflow
 A pipeline as code file specifies the stages, jobs, and actions for a pipeline to perform. Because the file is versioned, changes in pipeline code can be tested in branches with the corresponding application release.
 
 + The pipeline as code model of creating continuous integration pipelines and continuous deployment is an industry best practice addressing the following pain points: 
@@ -64,22 +66,33 @@ Develop templates to implement the different triggering mechanism for specific c
 This pipeline essentially covers all aspect of code creation, testing, compilation, and version management.  So our development pipeline must be able to automate as much as possible of the following GitHub Workflow:
 #
 
-## GitHub Action Workflow Templates
+# PBS GitHub Action Workflow Triggers
+Workflow triggers are events that cause a workflow to run without manual inetrvention.
 
-
-### Feature Branch Workflows
-
-1. Feature Branch Push - No Actions   
-
-Make sure there are no labels already assigned, you can execute the following steps using the GitHub GUI or using gl code against the current feature branch:
+## Feature Branch Workflows
+### Start with the develop branch
 ```
-### raise initial PR for code development and return PR #
-> gh pr create -B develop -d -a @me -t "feature set" -b "Initilization"
-> gh pr list -H feature-1       
+> git checkout develop
+> git fetch origin 
+> git reset --hard origin/develop
 ```
-
-2. Feature Branch Push - Code Scans (SCA & SAST)     
-
+### Create a new feature branch
+```
+> git checkout -b feature-new
+```
+### Pull, update, add, commit, and push - No action
+It is a good practice to pull when starting work for the day and push at the end of it.
+The idea in saving youe work without a PR being triggered stem from the fact that no new tags
+have been created
+```
+> git pull
+> git status
+> git add <some-file>
+> git commit
+> git push -u origin feature-new
+```
+### Feature Branch Detailed Actions
+1. Feature Branch Push - Code Scans (SCA & SAST)     
 ```
 > gh pr edit 13 --add-label "sca-only,sast-only"
 > git add .
@@ -87,8 +100,7 @@ Make sure there are no labels already assigned, you can execute the following st
 > git push 
 ```
 
-3. Feature Branch Push - Unit Test    
-
+2. Feature Branch Push - Unit Test    
 ```
 > gh pr edit 13 --remove-label "sca-only,sast-only"
 > gh pr edit 13 --add-label "test-only"
@@ -97,8 +109,7 @@ Make sure there are no labels already assigned, you can execute the following st
 > git push 
 ```
 
-4. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
-
+3. Feature Branch Push - Ready for Pull Request (PR) to Develop Branch
 ```
 > gh pr edit 13 --remove-label "test-only"
 > gh pr edit 13 --add-label "all-jobs"
@@ -107,68 +118,123 @@ Make sure there are no labels already assigned, you can execute the following st
 > git push  
 ```
 
-5. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch via GUI or CLI.
-
+4. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch via GUI or CLI.
 ```
 If you are alone working on FeatureB branch, the a pull --rebase develop is the best practice: you are replaying FeatureB changes on top of FeatureA. (and git push --force after).
 ```
 
-### Develop Branch Workflows
+## Develop Branch Workflows
+Nobody can make changes directly against the develop branch
+except running tests and merging code during PRs.
 
-1. Develop Branch Push - No Actions   
-
-    In GitHub repo, switch to the develop branch and push to develop branch:
-
+### Develop Branch Detailed Actions
+1. PR from Feature Branch - Runn all jobs in development branch
 ```
-> git checkout develop
-> git pull
-> gh pr create -B master -d -a @me -t "Develop Branch set" -b "Merging all features"
-> gh pr list -H develop    
-> gh pr edit 17 --add-label "all-jobs"
-
-### Make any changes then commit
 > git add .
-> git commit -m "My message - build, test, and merge to master branch"
+> git commit -m "Fixed code - execute all jobs from workflow"
+> git push  
+```
+2. SUCCESS - Ready for Pull Request (PR) to Release Branch
+```
+> gh pr edit 13 --remove-label "all-jobs"
+> gh pr edit 13 --add-label "release"
+> git add .
+> git commit -m "Release code - open ticker in JIRA"
+> git push  
+```
+3. FAILED - Create bugfix branch
+
+## Release Branch Workflow
+No work  is done directly on the release branch
+
+### Create a new release branch from develop branch
+```
+> git checkout -b release-new
+```
+
+### Release Branch Detailed Actions
+
+TBD
+
+
+## Bugfix Branch Workflow
+### Create a new bugfix branch
+```
+> git checkout -b bugfix-new
+```
+### Pull, update, add, commit, and push - No action
+It is a good practice to pull when starting work for the day and push at the end of it.
+The idea in saving youe work without a PR being triggered stem from the fact that no new tags
+have been created
+```
+> git pull
+> git status
+> git add <some-file>
+> git commit
+> git push -u origin bugfix-new
+```
+### Bugfix Branch Detailed Actions
+1. Bugfix Branch Push - Code Scans (SCA & SAST)     
+```
+> gh pr edit 13 --add-label "sca-only,sast-only"
+> git add .
+> git commit -m "Fixed code - perform SCA & SAST scans"
 > git push 
 ```
 
-2. Merge Develop to Master Branch - Approve Pull Request (PR) to Master Branch and Tag
-
+2. Bugfix Branch Push - Unit Test    
 ```
-```
-
-### Master Branch Workflows
-
-1.  Master Branch Push - No Actions 
-
-```
-> git checkout master
-> git pull
+> gh pr edit 13 --remove-label "sca-only,sast-only"
+> gh pr edit 13 --add-label "test-only"
 > git add .
-> git commit -m "My message.  [skip-actions]"
+> git commit -m "Fixed code - perform test"
 > git push 
 ```
 
-2.  Master Branch - Full Build
+3. Bugfix Branch Push - Ready for Pull Request (PR) to Develop Branch
+```
+> gh pr edit 13 --remove-label "test-only"
+> gh pr edit 13 --add-label "deploy"  // or minor version update (TBD)
+> git add .
+> git commit -m "Fixed code - execute all jobs from workflow"
+> git push  
+```
 
+4. Merge Feature to Develop Branch - Approve Pull Request (PR) to Develop Branch via GUI or CLI.
+
+## Master Branch Workflow
+Nobody can make changes directly against the master branch.
+
+1.  Master Branch - Full Build from PR (develop or hotfix branches)
 ```
 > git add .
 > git commit -m "Fixed code -  [all-jobs]"
 > git push  
 ```
 
-3.  HotFix Branch - Full Build 
-
+## Hotfix Branch Workflow
+1. Hotfix Branch Push - Code Scans (SCA & SAST)     
 ```
+> gh pr edit 13 --add-label "sca-only,sast-only"
 > git add .
-> git commit -m "Fixed code -  [all-jobs]"
-> git push  
+> git commit -m "Fixed code - perform SCA & SAST scans"
+> git push 
 ```
 
-4.  Master Branch - Build & Store Image / Binary 
-
+2. Hotfix Branch Push - Unit Test    
 ```
+> gh pr edit 13 --remove-label "sca-only,sast-only"
+> gh pr edit 13 --add-label "test-only"
 > git add .
-> git commit -m "Fixed code -  create-image"
+> git commit -m "Fixed code - perform test"
+> git push 
+```
+
+3. Hotfix Branch Push - Ready for Pull Request (PR) to Master Branch
+```
+> gh pr edit 13 --remove-label "test-only"
+> gh pr edit 13 --add-label "deploy"
+> git add .
+> git commit -m "Fixed code - execute all jobs from workflow"
 > git push  
 ```

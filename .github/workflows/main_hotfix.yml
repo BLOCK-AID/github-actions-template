@@ -1,4 +1,112 @@
-# Create hotfix-branch from develop
-# Commit to hotfix-branch
-# Merge hotfix-branch into develop
-# Rebase (or cherry-pick) hotfix-branch onto release
+name: CI Pipeline - Hotfix Branch Workflow
+
+# Step 1 - Create hotfix-branch from develop
+# Step 2 - Commit to hotfix-branch
+# Step 3 - Merge hotfix-branch into develop
+# Step 4 - Create PR from hotfix branch to master
+
+on:
+  push:
+    branches: ['hotfix-']
+    tags:
+      - '*'
+  pull_request:
+    types: 
+      - synchronize
+    branches:
+      - hotfix-*
+  # schedule:
+  #   - cron: '0 19 * * 0'
+
+env:
+  WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
+  
+jobs:
+  dump-github-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          JOB_ACTION: ${{ github.event.action }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          echo ${{ env.JOB_ACTION }}
+          echo ${{ env.PR_NUMBER }}
+          
+  dump-job-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Job Context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+          JOB_STATUS: ${{ job.status }}
+        run: echo ${{ env.JOB_STATUS }}
+
+  log-env:
+    # if: "contains($WF_PR_LABELS, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [dump-github-context, dump-job-context]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log ENV Variables
+        run: |
+          echo "WF_MESSAGE: ${WF_MESSAGE}"
+
+# This job is run under the following conditions:
+#   - label : [all-jobs]
+#   - label : [sca-only, ...]
+#   - label : [raise-pr, ...]
+#   - label : [merge, ...]
+# 
+  call-sca-workflow:
+    if: "contains(github.event.pull_request.labels.*.name, 'sca-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: log-env
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running sca-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/sca.yml@master
+    secrets:
+      host: ${{ secrets.SONARQUBE_HOST }}
+      login: ${{ secrets.SONARQUBE_TOKEN }}
+
+  call-sast-workflow:
+    # //if: "contains(github.event.pull_request.labels.name, 'sast-only') || contains(github.event.head_commit.message, 'all-jobs')" 
+    if: "contains(github.event.pull_request.labels.*.name, 'sast-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: log-env
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: 
+    #       echo ${{github.event.head_commit.message}}
+    uses: BLOCK-AID/ci_workflows/.github/workflows/sast.yml@master
+
+  call-test-workflow:
+    if: "contains(github.event.pull_request.labels.*.name, 'test-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [log-env, call-build-workflow]
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running test-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/test.yml@master
+
+  call-build-workflow:
+    if: "contains(github.event.pull_request.labels.*.name, 'build-only') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: [call-sca-workflow, call-sast-workflow]
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running build-only'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/build.yml@master
+
+  call-deploy-workflow:
+    if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: call-test-workflow
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Running local deploy'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+
+  call-raisepr-workflow:
+    if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
+    needs: call-test-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Raising - Updating PR with label to merge develop branch to master branch'
+    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master

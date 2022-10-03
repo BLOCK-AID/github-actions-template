@@ -1,23 +1,29 @@
-name: CI Pipeline - Master Branch Workflow
+name: CI Pipeline - Release Branch Workflow
 
-# Step 1 - Merge release-branch to master on PR
-# Step 2 - Merge hotfix-branch to master on PR
-# Step 3 - Merge & Squash master to develop on major version tag
+# Step 1 - Create feature-branch from develop
+# Step 2 - Commit to feature-branch
+#           + soft commit: no new tag/PR
+#           + hard commit: new tag/PR
+# Step 3 - Merge release-branch to develop on PR
 
-# Trigger the workflow on PR abd major version tag
-
+# Trigger the workflow on:
+# - PR from feature branch to develop branch
+# - On new tags only
 on:
-  push:
-    tags:
-      - 'v*'
   pull_request:
     types: 
       - synchronize
-    branches: 
-      - 'master'
-    
+    branches:
+      - develop
+      - feature-*
+  push:
+    tags:
+      - '*'
+
 env:
-  WF_MESSAGE: ${{ github.event.head_commit.message }}  #get message from commit
+  WF_PR_NUMBER: ${{ github.event.number }}
+  WF_PR_LABELS: ${{ github.event.issue.labels }}
+  WF_BRANCH: ${{ github.head_ref }} 
   
 jobs:
   dump-github-context:
@@ -95,7 +101,7 @@ jobs:
 
   call-deploy-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'deploy') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: call-test-workflow
+    needs: call-build-workflow
     # runs-on: ubuntu-latest
     # steps:
     #   - run: echo 'Running local deploy'
@@ -103,8 +109,9 @@ jobs:
 
   call-raisepr-workflow:
     if: "contains(github.event.pull_request.labels.*.name, 'raise-pr') || contains(github.event.pull_request.labels.*.name, 'all-jobs')" 
-    needs: call-test-workflow
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Raising - Updating PR with label to merge develop branch to master branch'
-    # uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+    needs: call-build-workflow
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo 'Raising - Updating PR with label to merge feature branch to develop branch'
+    uses: BLOCK-AID/ci_workflows/.github/workflows/deploy.yml@master
+
